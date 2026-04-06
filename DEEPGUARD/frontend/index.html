@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DEEPGUARD | Forensic Content Analysis</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="description" content="AI-generated content detection for video and audio forensics">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔍</text></svg>">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M2 17L12 22L22 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M2 12L12 17L22 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <h1>DEEPGUARD</h1>
+            </div>
+            <p class="subtitle">FORENSIC CONTENT ANALYSIS // v2.0</p>
+        </header>
+
+        <!-- Navigation Tabs -->
+        <nav class="nav-tabs">
+            <button class="nav-tab active" data-tab="upload">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                    <polyline points="17,8 12,3 7,8"/>
+                    <line x1="12" y1="3" x2="12" y2="15"/>
+                </svg>
+                Upload
+            </button>
+            <button class="nav-tab" data-tab="history">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"/>
+                    <polyline points="12,6 12,12 16,14"/>
+                </svg>
+                History
+            </button>
+        </nav>
+
+        <main class="main-content">
+            <!-- Upload Section -->
+            <section id="upload-section" class="upload-section">
+                <div class="upload-card" id="drop-zone">
+                    <div class="upload-icon">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M21 15V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M17 8L12 3L7 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M12 3V15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <h2>Upload Content for Analysis</h2>
+                    <p>Drag and drop your file here, or click to browse</p>
+                    <span class="file-types">SUPPORTED FORMATS: MP4, AVI, MOV, MKV, MP3, WAV, AAC, WEBM</span>
+                    <input type="file" id="file-input" accept="video/*,audio/*" hidden>
+                    <button class="btn btn-primary" id="select-file-btn">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 5v14M5 12h14"/>
+                        </svg>
+                        Select File
+                    </button>
+
+                    <!-- File Preview Container -->
+                    <div class="file-preview-container" id="file-preview-container">
+                        <div class="file-preview">
+                            <div class="file-thumbnail" id="file-thumbnail">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                                    <circle cx="8.5" cy="8.5" r="1.5"/>
+                                    <polyline points="21 15 16 10 5 21"/>
+                                </svg>
+                            </div>
+                            <div class="file-details">
+                                <div class="file-name" id="preview-file-name">-</div>
+                                <div class="file-meta">
+                                    <span id="preview-file-size">-</span>
+                                    <span id="preview-file-type">-</span>
+                                    <span id="preview-file-duration">-</span>
+                                </div>
+                            </div>
+                            <button class="btn btn-ghost" id="remove-file-btn" title="Remove file">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <line x1="18" y1="6" x2="6" y2="18"/>
+                                    <line x1="6" y1="6" x2="18" y2="18"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Analysis Options -->
+                <div class="analysis-options">
+                    <h3>Analysis Mode</h3>
+                    <div class="option-cards">
+                        <label class="option-card active" data-mode="detect">
+                            <input type="radio" name="analysis-mode" value="detect" checked>
+                            <div class="option-content">
+                                <div class="option-icon">⚡</div>
+                                <div class="option-title">Full Analysis</div>
+                                <div class="option-desc">Video + Audio</div>
+                            </div>
+                        </label>
+                        <label class="option-card" data-mode="detect-video">
+                            <input type="radio" name="analysis-mode" value="detect-video">
+                            <div class="option-content">
+                                <div class="option-icon">🎥</div>
+                                <div class="option-title">Video Only</div>
+                                <div class="option-desc">Frames analysis</div>
+                            </div>
+                        </label>
+                        <label class="option-card" data-mode="detect-audio">
+                            <input type="radio" name="analysis-mode" value="detect-audio">
+                            <div class="option-content">
+                                <div class="option-icon">🔊</div>
+                                <div class="option-title">Audio Only</div>
+                                <div class="option-desc">Audio analysis</div>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Analysis Button -->
+                <div class="text-center" id="analyze-btn-container" style="display: none;">
+                    <button class="btn btn-success" id="analyze-btn" style="padding: var(--spacing-md) var(--spacing-xl); font-size: 1rem;">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <line x1="12" y1="8" x2="12" y2="16"/>
+                            <line x1="8" y1="12" x2="16" y2="12"/>
+                        </svg>
+                        Start Analysis
+                    </button>
+                </div>
+            </section>
+
+            <!-- Loading Section -->
+            <section id="loading-section" class="loading-section hidden">
+                <div class="loading-card">
+                    <div class="spinner"></div>
+                    <h2>ANALYZING CONTENT</h2>
+                    <p id="loading-text">Initializing scan...</p>
+                    <div class="progress-container">
+                        <div class="progress-bar" id="progress-bar"></div>
+                    </div>
+                    <span class="progress-text" id="progress-text">0%</span>
+                </div>
+            </section>
+
+            <!-- Results Section -->
+            <section id="results-section" class="results-section hidden">
+                <div class="results-card">
+                    <div class="results-header">
+                        <h2>ANALYSIS RESULTS</h2>
+                        <div class="results-actions">
+                            <button class="btn btn-ghost" id="export-btn" title="Export Report (Ctrl+E)">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                                    <polyline points="7,10 12,15 17,10"/>
+                                    <line x1="12" y1="15" x2="12" y2="3"/>
+                                </svg>
+                                Export
+                            </button>
+                            <button class="btn btn-primary" id="new-analysis-btn">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <line x1="12" y1="5" x2="12" y2="19"/>
+                                    <line x1="5" y1="12" x2="19" y2="12"/>
+                                </svg>
+                                New Analysis
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Verdict Badge -->
+                    <div id="verdict-container" class="verdict-container">
+                        <div id="verdict-badge" class="verdict-badge">
+                            <span id="verdict-text">Analyzing...</span>
+                        </div>
+                        <div class="confidence-section">
+                            <span class="confidence-label">Confidence Score</span>
+                            <div class="confidence-bar-container">
+                                <div id="confidence-bar" class="confidence-bar"></div>
+                            </div>
+                            <span id="confidence-value" class="confidence-value">0/10</span>
+                        </div>
+                    </div>
+
+                    <!-- File Info -->
+                    <div class="file-info" id="file-info">
+                        <div class="info-item">
+                            <span class="info-label">File Name</span>
+                            <span class="info-value" id="file-name">-</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">File Size</span>
+                            <span class="info-value" id="file-size">-</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Analysis Type</span>
+                            <span class="info-value" id="analysis-type">-</span>
+                        </div>
+                    </div>
+
+                    <!-- Reasons Section -->
+                    <div class="reasons-section" id="reasons-section">
+                        <h3>Detection Indicators</h3>
+                        <ul id="reasons-list" class="reasons-list">
+                            <!-- Populated by JS -->
+                        </ul>
+                    </div>
+
+                    <!-- Detailed Results (Expandable) -->
+                    <div class="details-section">
+                        <button class="details-toggle" id="details-toggle">
+                            <span>Detailed Results</span>
+                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
+                        <div class="details-content hidden" id="details-content">
+                            <div class="details-grid">
+                                <div class="detail-item" id="video-score-container">
+                                    <span class="detail-label">Video Score</span>
+                                    <span class="detail-value" id="video-score">-</span>
+                                </div>
+                                <div class="detail-item" id="audio-score-container">
+                                    <span class="detail-label">Audio Score</span>
+                                    <span class="detail-value" id="audio-score">-</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Processing Time</span>
+                                    <span class="detail-value" id="processing-time">-</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Frames Analyzed</span>
+                                    <span class="detail-value" id="frames-analyzed">-</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Analysis ID</span>
+                                    <span class="detail-value" id="analysis-id">-</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Timestamp</span>
+                                    <span class="detail-value" id="analysis-timestamp">-</span>
+                                </div>
+                            </div>
+                            <div class="raw-json">
+                                <span class="detail-label">Raw Response Data</span>
+                                <pre id="raw-json"></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- History Section -->
+            <section id="history-section" class="history-section hidden">
+                <div class="history-card">
+                    <div class="history-header">
+                        <h2>ANALYSIS HISTORY</h2>
+                        <button class="btn btn-danger" id="clear-history-btn">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="3,6 5,6 21,6"/>
+                                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                            </svg>
+                            Clear All
+                        </button>
+                    </div>
+
+                    <div class="history-empty" id="history-empty">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <circle cx="12" cy="12" r="10"/>
+                            <line x1="12" y1="16" x2="12" y2="12"/>
+                            <line x1="12" y1="8" x2="12.01" y2="8"/>
+                        </svg>
+                        <h3>No Analysis History</h3>
+                        <p>Your completed analyses will appear here</p>
+                    </div>
+
+                    <div class="history-list" id="history-list">
+                        <!-- History items populated by JS -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Error Section -->
+            <section id="error-section" class="error-section hidden">
+                <div class="error-card">
+                    <div class="error-icon">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                            <path d="M12 8V12M12 16H12.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <h2>ANALYSIS FAILED</h2>
+                    <p id="error-message">Something went wrong. Please try again.</p>
+                    <button class="btn btn-primary" id="retry-btn">Try Again</button>
+                </div>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <p>DEEPGUARD // Forensic Content Analysis // Press Ctrl+U to Upload</p>
+        </footer>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>
